@@ -2,9 +2,9 @@
 
 ## Zadanie
 
-Stwórz własne CV na podstawie `index.html`. Uzupełnij sekcje **O mnie, Edukacja i Doświadczenie**, podmień zdjęcie oraz dodaj odnośniki do swoich profili LinkedIn i GitHub. Załóż konta w obu serwisach, jeśli jeszcze ich nie masz. Rozwijaj projekt lokalnie, zapisując kolejne etapy w Git, a następnie prześlij całe repozytorium wraz z historią na GitHuba.
+Sklonuj [repozytorium szablonu](https://github.com/ZajdelR/idsik-git-webpage-example) i stwórz własne CV na podstawie `index.html`. Uzupełnij sekcje **O mnie, Edukacja i Doświadczenie**, podmień zdjęcie oraz dodaj odnośniki do swoich profili LinkedIn i GitHub. Załóż konta w obu serwisach, jeśli jeszcze ich nie masz. Rozwijaj projekt lokalnie, zapisując kolejne etapy w Git, a następnie prześlij całe repozytorium wraz z historią na GitHuba.
 
-**Efekt:** działające CV w przeglądarce, uzupełnione profile oraz repozytorium z co najmniej 6 logicznymi commitami, w tym jedną aktualizacją po pierwszym pushu. Repozytorium na potrzeby ćwiczenia ma być **prywatne**. Oceniane są końcowy plik CV i drzewo zmian na GitHubie. Publikacja strony w internecie nie jest wymagana.
+**Efekt:** działające CV w przeglądarce, uzupełnione profile oraz repozytorium z co najmniej 6 własnymi logicznymi commitami, w tym jedną aktualizacją po pierwszym pushu. Repozytorium na potrzeby ćwiczenia ma być **prywatne**. Oceniane są końcowy plik CV i drzewo zmian na GitHubie. Publikacja strony w internecie nie jest wymagana.
 
 **Narzędzia:** Git, edytor tekstu (np. VS Code), przeglądarka i terminal. Polecenia Git działają w PowerShell oraz Git Bash. Fragmenty `TWOJ_LOGIN`, imię i adres e-mail zastąp własnymi wartościami.
 
@@ -12,8 +12,8 @@ Stwórz własne CV na podstawie `index.html`. Uzupełnij sekcje **O mnie, Edukac
 
 | Etap | Rezultat |
 | --- | --- |
-| Przygotowanie katalogu i planu | Osobny folder projektu i lista zadań |
-| Repozytorium lokalne | Konfiguracja Git i pierwszy commit |
+| Klonowanie szablonu | Osobny folder z plikami i historią |
+| Konfiguracja autora | Rozpoznana historia i adres źródłowego repozytorium |
 | Treść CV oraz zdjęcie | Trzy sekcje CV, kilka commitów |
 | Konta LinkedIn i GitHub | Uzupełnione profile i linki w CV |
 | Kontrola jakości i historii | Sprawdzone CV i uporządkowane zmiany |
@@ -22,46 +22,34 @@ Stwórz własne CV na podstawie `index.html`. Uzupełnij sekcje **O mnie, Edukac
 
 Weryfikację kont można dokończyć poza zajęciami. Git działa lokalnie bez konta na GitHubie i bez internetu.
 
-## 1. Przygotuj samodzielny projekt
+## 1. Sklonuj repozytorium szablonu
 
-1. Skopiuj **zawartość** folderu `ex1_cv_webpage` do nowego folderu `moje-cv`, położonego **poza repozytorium materiałów kursowych**, np. w Dokumentach. Nie kopiuj folderu `.git`.
-2. Otwórz `moje-cv` w edytorze i terminalu. Wszystkie dalsze polecenia wykonuj w tym folderze.
-3. Otwórz `index.html` w przeglądarce. Zachowaj katalogi `assets` i `images` — zawierają style, skrypty i zdjęcia.
-4. Opcjonalnie utwórz pomocniczy plik `PLAN.md` z listą zadań (plan nie podlega ocenie):
-
-```markdown
-# Plan mojego CV
-- [ ] Uzupełnić O mnie i umiejętności
-- [ ] Dodać edukację
-- [ ] Opisać doświadczenie lub projekt studencki
-- [ ] Podmienić zdjęcie
-- [ ] Założyć lub uzupełnić LinkedIn i GitHub
-- [ ] Dodać i sprawdzić linki do profili
-- [ ] Sprawdzić stronę na szerokim i wąskim ekranie
-- [ ] Przesłać repozytorium na GitHub
-- [ ] Wprowadzić i wysłać kolejną zmianę
-```
-
-Oznaczaj wykonane zadania przez `[x]`. Przed pierwszym commitem możesz utworzyć `.gitignore` z wpisami `.DS_Store`, `Thumbs.db` i `.vscode/` (każdy w osobnej linii). Nie ignoruj `index.html`, zdjęcia ani `assets`.
-
-## 2. Rozpocznij lokalną historię
-
-Sprawdź dostępność Git i zainicjuj repozytorium:
+W terminalu przejdź do katalogu na własne projekty, poza repozytorium materiałów kursowych. Wykonaj:
 
 ```sh
-git --version
-git init -b main
+git clone https://github.com/ZajdelR/idsik-git-webpage-example.git moje-cv
+cd moje-cv
+```
+
+Clone pobiera pliki **i historię**, tworząc folder `moje-cv` z lokalnym repozytorium. Nie pobieraj ZIP-a, nie usuwaj `.git` i nie wykonuj `git init`. Nie trzeba robić forka ani używać „Use this template”.
+
+Otwórz `index.html` w przeglądarce. Katalogi `assets` i `images` zawierają zasoby strony; pozostaw je w projekcie. Wszystkie dalsze polecenia wykonuj w `moje-cv`.
+
+## 2. Ustaw autora i sprawdź punkt startu
+
+```sh
 git config user.name "Imię Nazwisko"
 git config user.email "twoj-adres@example.com"
 git status
-git add .
-git diff --cached --stat
-git commit -m "Dodaj szablon CV"
+git log --oneline -5
+git remote -v
 ```
 
-Konfiguracja bez `--global` dotyczy tylko tego projektu. Adres e-mail trafia do metadanych commitów; możesz użyć adresu noreply podanego w ustawieniach GitHuba, jeśli masz już konto. Sprawdź pliki przed zatwierdzeniem — historia repozytorium będzie zawierała także wcześniejsze wersje CV.
+Konfiguracja dotyczy nowych commitów w tym repozytorium; nie zmienia autorstwa historii szablonu. Możesz użyć adresu noreply z ustawień GitHuba. Clone ustawił nazwę `origin` dla adresu prowadzącego. Na tym etapie pracuj lokalnie; przed pierwszym pushem dodasz własne repozytorium.
 
-**Znaczenie kroków:** edycja zmienia pliki robocze; `git add` wybiera zawartość następnego commita; `git commit` zapisuje lokalną wersję; dopiero `git push` wysyła commity na serwer.
+Nie twórz ponownie commita „Dodaj szablon CV”: ten stan jest już zapisany. Wymagane jest co najmniej **6 własnych logicznych commitów**, oprócz historii pobranej ze szablonem. Zachowaj plik licencji oraz autorstwo HTML5 UP.
+
+Opcjonalnie zapisz własny plan w `PLAN.md`. Nie jest oddzielnym przedmiotem oceny.
 
 ## 3. Uzupełniaj CV małymi etapami
 
@@ -92,7 +80,7 @@ git commit -m "Dodaj własne zdjęcie profilowe"
 
 Jeśli używasz innej nazwy zdjęcia, zmień ją w poleceniu. Git zapisuje wersje obrazów, ale zwykły `git diff` nie pokaże ich różnic wizualnych — obejrzyj zdjęcie w przeglądarce.
 
-Zaplanuj osobne commity: szablon, O mnie, edukacja, doświadczenie, zdjęcie, profile. Nie wykonuj pustych commitów tylko dla osiągnięcia wymaganej liczby.
+Zaplanuj własne commity: O mnie, edukacja, doświadczenie, zdjęcie, profile, poprawki wyglądu lub umiejętności. Nie wykonuj pustych commitów tylko dla osiągnięcia wymaganej liczby.
 
 ## 4. Załóż konta i uzupełnij profile
 
@@ -135,10 +123,13 @@ Nie musisz udostępniać repozytorium prowadzącemu ani wysyłać zaproszenia. P
 Skopiuj adres HTTPS repozytorium i wykonaj (zastąp `TWOJ_LOGIN`):
 
 ```sh
+git remote rename origin upstream
 git remote add origin https://github.com/TWOJ_LOGIN/moje-cv.git
 git remote -v
 git push -u origin main
 ```
+
+**Dlaczego zmieniamy remote?** Po clone nazwa origin wskazywała szablon. Rename zachowuje ten adres jako upstream; nowe origin wskazuje Twoje konto. Sprawdź oba adresy przed push. Polecenie `git push -u origin main` przesyła historię szablonu i własne commity, a także ustawia własne origin/main jako śledzoną gałąź. Nie wysyłamy zmian do upstream.
 
 Dokończ logowanie wskazane przez zainstalowanego menedżera poświadczeń Git. Hasło do konta GitHub nie służy do uwierzytelniania operacji Git przez HTTPS; jeśli konfiguracja wymaga tokenu, stosuj go jako poświadczenie, nigdy jako treść pliku lub adresu remote.
 
@@ -235,7 +226,7 @@ Podczas zajęć pokaż prowadzącemu **końcowe CV w przeglądarce oraz histori�
 Oceniane będą dwa elementy:
 
 1. **Końcowy plik CV (`index.html`)** — własna treść sekcji O mnie, Edukacja i Doświadczenie, podmienione zdjęcie, poprawne linki do LinkedIna i GitHuba, czytelność i działanie strony wraz z zasobami, brak tekstów zastępczych.
-2. **Drzewo zmian na GitHubie** — co najmniej 6 logicznych commitów dokumentujących rzeczywisty rozwój CV, opisowe komunikaty, sensowny podział zmian i aktualizacja po pierwszym pushu. Prowadzący przejrzy historię commitów oraz różnice między wersjami. Liniowa historia na `main` wystarczy; dodatkowe gałęzie nie są wymagane.
+2. **Drzewo zmian na GitHubie** — co najmniej 6 własnych logicznych commitów (oprócz historii szablonu) dokumentujących rzeczywisty rozwój CV, opisowe komunikaty, sensowny podział zmian i aktualizacja po pierwszym pushu. Prowadzący przejrzy historię commitów oraz różnice między wersjami. Liniowa historia na `main` wystarczy; dodatkowe gałęzie nie są wymagane.
 
 Nie jest wymagany osobny raport, oddanie planu ani publiczny adres strony. `PLAN.md` może służyć jako pomoc w organizacji pracy. Linki do profili mają być zawarte w CV.
 
