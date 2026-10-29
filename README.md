@@ -6,7 +6,7 @@ Sklonuj [repozytorium szablonu](https://github.com/ZajdelR/idsik-git-webpage-exa
 
 **Efekt:** działające CV w przeglądarce, uzupełnione profile oraz repozytorium z co najmniej 6 własnymi logicznymi commitami, w tym jedną aktualizacją po pierwszym pushu. Repozytorium na potrzeby ćwiczenia ma być **prywatne**. Oceniane są końcowy plik CV i drzewo zmian na GitHubie. Publikacja strony w internecie nie jest wymagana.
 
-**Narzędzia:** Git, edytor tekstu (np. VS Code), przeglądarka i terminal. Polecenia Git działają w PowerShell oraz Git Bash. Fragmenty `TWOJ_LOGIN`, imię i adres e-mail zastąp własnymi wartościami.
+**Narzędzia:** Git, edytor tekstu (np. VS Code), przeglądarka i terminal. Do poleceń SSH używaj Git Bash lub bash w MobaXterm. Fragmenty `TWOJ_LOGIN`, imię i adres e-mail zastąp własnymi wartościami.
 
 ## Konspekt pracy
 
@@ -17,7 +17,7 @@ Sklonuj [repozytorium szablonu](https://github.com/ZajdelR/idsik-git-webpage-exa
 | Treść CV oraz zdjęcie | Trzy sekcje CV, kilka commitów |
 | Konta LinkedIn i GitHub | Uzupełnione profile i linki w CV |
 | Kontrola jakości i historii | Sprawdzone CV i uporządkowane zmiany |
-| GitHub i pierwszy push | Repozytorium z pełną historią |
+| GitHub i pierwszy push | Repozytorium z własną historią, bez commitów szablonu |
 | Kolejna aktualizacja i oddanie | Nowy commit, drugi push, prezentacja na zajęciach |
 
 Weryfikację kont można dokończyć poza zajęciami. Git działa lokalnie bez konta na GitHubie i bez internetu.
@@ -31,7 +31,7 @@ git clone https://github.com/ZajdelR/idsik-git-webpage-example.git moje-cv
 cd moje-cv
 ```
 
-Clone pobiera pliki **i historię**, tworząc folder `moje-cv` z lokalnym repozytorium. Nie pobieraj ZIP-a, nie usuwaj `.git` i nie wykonuj `git init`. Nie trzeba robić forka ani używać „Use this template”.
+Clone pobiera pliki **i historię**, tworząc folder `moje-cv` z lokalnym repozytorium. Nie pobieraj ZIP-a i nie wykonuj `git init`. W kolejnym kroku utworzymy nową historię bez kasowania katalogu `.git`. Nie trzeba robić forka ani używać „Use this template”.
 
 Otwórz `index.html` w przeglądarce. Katalogi `assets` i `images` zawierają zasoby strony; pozostaw je w projekcie. Wszystkie dalsze polecenia wykonuj w `moje-cv`.
 
@@ -45,11 +45,27 @@ git log --oneline -5
 git remote -v
 ```
 
-Konfiguracja dotyczy nowych commitów w tym repozytorium; nie zmienia autorstwa historii szablonu. Możesz użyć adresu noreply z ustawień GitHuba. Clone ustawił nazwę `origin` dla adresu prowadzącego. Na tym etapie pracuj lokalnie; przed pierwszym pushem dodasz własne repozytorium.
+Konfiguracja dotyczy nowych commitów w tym repozytorium; nie zmienia autorstwa historii szablonu. Możesz użyć adresu noreply z ustawień GitHuba. Clone ustawił nazwę `origin` dla adresu prowadzącego. Następnie zmienisz origin na własne repozytorium i rozpoczniesz historię od nowa.
 
-Nie twórz ponownie commita „Dodaj szablon CV”: ten stan jest już zapisany. Wymagane jest co najmniej **6 własnych logicznych commitów**, oprócz historii pobranej ze szablonem. Zachowaj plik licencji oraz autorstwo HTML5 UP.
+### Własny adres i nowa historia — przed edycją CV
 
-Opcjonalnie zapisz własny plan w `PLAN.md`. Nie jest oddzielnym przedmiotem oceny.
+Utwórz na swoim koncie GitHub **puste prywatne repozytorium** `moje-cv`, bez README, licencji i .gitignore. Zastąp TWOJ_LOGIN:
+
+```sh
+git remote set-url origin git@github.com:TWOJ_LOGIN/moje-cv.git
+git remote -v
+git checkout --orphan start-cv
+git add .
+git commit -m "Rozpocznij wlasny projekt CV"
+git branch -M main
+git log --oneline
+```
+
+Wykonaj ten etap **raz, przed własnymi zmianami i przed pierwszym pushem**. Orphan rozpoczyna linię bez rodziców, zachowując pliki. `branch -M main` zastępuje lokalną gałąź z odziedziczoną historią. Log powinien pokazać jeden własny commit. Nie jest to `reset --hard`: nie przywracamy wcześniejszej treści plików. Zachowaj LICENSE.txt i autorstwo HTML5 UP.
+
+Stare obiekty i odwołania mogą pozostać lokalnie; nie należą do nowej historii main i nie zostaną wysłane przez `git push origin main`. Nie używaj `push --all` ani `--mirror`. Jeśli wykonałeś już własne commity przed tym etapem, po zastąpieniu main nie będą widoczne w nowej historii — zachowaj kopię projektu z `.git` przed kontynuacją albo uzgodnij przejście z prowadzącym.
+
+Wymagane jest co najmniej **6 własnych logicznych commitów**, licząc nowy commit początkowy oraz dalsze zmiany. Opcjonalny PLAN.md nie podlega osobnej ocenie.
 
 ## 3. Uzupełniaj CV małymi etapami
 
@@ -96,7 +112,7 @@ Repozytorium ćwiczenia pozostaje prywatne. Na profilach LinkedIn i GitHub publi
 
 ```sh
 git status
-git log --oneline --graph --all
+git log --oneline --graph main
 git show --stat HEAD
 git diff HEAD~1 HEAD -- index.html
 ```
@@ -114,32 +130,47 @@ Sprawdź w przeglądarce:
 
 Zapisz ewentualne poprawki w Git. Przed wysłaniem zmian `git status` powinien pokazywać brak niezatwierdzonych zmian.
 
-## 6. Utwórz repozytorium na GitHubie i wyślij historię
+## 6. Utwórz klucz SSH, dodaj go do GitHuba i wykonaj push
 
-Na GitHubie wybierz **New repository**, wpisz nazwę `moje-cv` i ustaw widoczność **Private**. W tym ćwiczeniu repozytorium ma pozostać prywatne. **Nie inicjalizuj repozytorium plikiem README, licencją ani `.gitignore`** — pliki i historia istnieją już lokalnie.
+Repozytorium `moje-cv` na Twoim koncie jest puste, a lokalny origin wskazuje już jego adres SSH. Poniższe polecenia wykonuj w **Git Bash lub terminalu bash MobaXterm**, nie w PowerShell.
 
-Nie musisz udostępniać repozytorium prowadzącemu ani wysyłać zaproszenia. Podczas zajęć pokaż repozytorium po zalogowaniu na swoje konto GitHub.
-
-Skopiuj adres HTTPS repozytorium i wykonaj (zastąp `TWOJ_LOGIN`):
+### Utwórz klucz
 
 ```sh
-git remote rename origin upstream
-git remote add origin https://github.com/TWOJ_LOGIN/moje-cv.git
+ssh-keygen -t ed25519 -C "twoj-adres@example.com"
+```
+
+Wpisz własny e-mail jako etykietę. Przyjmij domyślną lokalizację, jeśli plik klucza jeszcze nie istnieje. **Nie nadpisuj istniejącego klucza**; możesz użyć już posiadanego, a przy innej nazwie dopasuj dalsze ścieżki. Ustaw passphrase. Plik `~/.ssh/id_ed25519` jest prywatny; `~/.ssh/id_ed25519.pub` jest publiczny. Żadnego z nich nie dodawaj do projektu CV.
+
+### Dodaj klucz publiczny do GitHuba
+
+```sh
+cat ~/.ssh/id_ed25519.pub
+```
+
+Skopiuj całą linię. Na swoim koncie wybierz **Settings → SSH and GPG keys → New SSH key**, wpisz nazwę komputera, wybierz **Authentication Key**, wklej linię do pola **Key** i kliknij **Add SSH key**. Nigdy nie wklejaj klucza prywatnego.
+
+### Sprawdź połączenie i wyślij projekt
+
+```sh
+ssh -T git@github.com
+```
+
+SSH odczyta klucz z domyślnej lokalizacji `~/.ssh/id_ed25519`; jeśli jest chroniony passphrase, poprosi o jej wpisanie. Przy niestandardowej nazwie skonfiguruj `IdentityFile` w `~/.ssh/config`, aby zarówno test, jak i push używały właściwego klucza.
+
+Przy pierwszym połączeniu porównaj odcisk serwera z [oficjalnymi odciskami GitHuba](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints), zanim zaakceptujesz serwer. Poprawny komunikat zawiera `Hi TWOJ_LOGIN! You've successfully authenticated, but GitHub does not provide shell access.` Kod zakończenia 1 jest normalny dla tego testu.
+
+```sh
 git remote -v
+git log --oneline
 git push -u origin main
 ```
 
-**Dlaczego zmieniamy remote?** Po clone nazwa origin wskazywała szablon. Rename zachowuje ten adres jako upstream; nowe origin wskazuje Twoje konto. Sprawdź oba adresy przed push. Polecenie `git push -u origin main` przesyła historię szablonu i własne commity, a także ustawia własne origin/main jako śledzoną gałąź. Nie wysyłamy zmian do upstream.
+Origin musi wskazywać `git@github.com:TWOJ_LOGIN/moje-cv.git`. Push wysyła nową historię main — własny początkowy commit oraz późniejsze zmiany, bez przodków z repozytorium szablonu. `-u` ustawia powiązanie z origin/main. Nie używaj `--all`, `--mirror` ani `--force`. Odśwież własne repozytorium i sprawdź pliki oraz autora commitów. Sam push nie publikuje strony WWW.
 
-Dokończ logowanie wskazane przez zainstalowanego menedżera poświadczeń Git. Hasło do konta GitHub nie służy do uwierzytelniania operacji Git przez HTTPS; jeśli konfiguracja wymaga tokenu, stosuj go jako poświadczenie, nigdy jako treść pliku lub adresu remote.
+Przy `Permission denied (publickey)` sprawdź, czy dodano właściwy klucz publiczny do właściwego konta i czy odpowiadający mu klucz prywatny znajduje się w `~/.ssh/id_ed25519`. Przy odrzuconym pushu sprawdź, czy docelowe repozytorium rzeczywiście było puste; nie wymuszaj nadpisania.
 
-Odśwież repozytorium w przeglądarce. Sprawdź `index.html`, `assets`, `images` oraz listę commitów. Samo przesłanie HTML do repozytorium nie uruchamia strony WWW.
-
-Jeśli pojawi się błąd:
-
-- `remote origin already exists`: sprawdź `git remote -v`; błędny adres popraw poleceniem `git remote set-url origin ADRES_REPOZYTORIUM`.
-- `src refspec main does not match any`: sprawdź `git branch --show-current` i `git log --oneline`; upewnij się, że masz pierwszy commit i gałąź `main`.
-- `non-fast-forward`: na serwerze istnieją inne commity. Nie używaj `--force`; pobierz informacje przez `git fetch origin` i przeanalizuj historię z prowadzącym.
+Źródła: [generowanie klucza SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent), [dodawanie klucza do GitHuba](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
 
 ## 7. Zaktualizuj CV po pierwszym pushu
 
@@ -226,7 +257,7 @@ Podczas zajęć pokaż prowadzącemu **końcowe CV w przeglądarce oraz histori�
 Oceniane będą dwa elementy:
 
 1. **Końcowy plik CV (`index.html`)** — własna treść sekcji O mnie, Edukacja i Doświadczenie, podmienione zdjęcie, poprawne linki do LinkedIna i GitHuba, czytelność i działanie strony wraz z zasobami, brak tekstów zastępczych.
-2. **Drzewo zmian na GitHubie** — co najmniej 6 własnych logicznych commitów (oprócz historii szablonu) dokumentujących rzeczywisty rozwój CV, opisowe komunikaty, sensowny podział zmian i aktualizacja po pierwszym pushu. Prowadzący przejrzy historię commitów oraz różnice między wersjami. Liniowa historia na `main` wystarczy; dodatkowe gałęzie nie są wymagane.
+2. **Drzewo zmian na GitHubie** — co najmniej 6 własnych logicznych commitów (od nowego commita początkowego) dokumentujących rzeczywisty rozwój CV, opisowe komunikaty, sensowny podział zmian i aktualizacja po pierwszym pushu. Prowadzący przejrzy historię commitów oraz różnice między wersjami. Liniowa historia na `main` wystarczy; dodatkowe gałęzie nie są wymagane.
 
 Nie jest wymagany osobny raport, oddanie planu ani publiczny adres strony. `PLAN.md` może służyć jako pomoc w organizacji pracy. Linki do profili mają być zawarte w CV.
 
